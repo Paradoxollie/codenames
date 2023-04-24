@@ -1,276 +1,97 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>Mr Marienne is a spy</title>
-        <meta charset="UTF-8">
-        <style>
-            /* Styles */
-            @import url('https://fonts.googleapis.com/css2?family=Muli:wght@400;700&display=swap');
+  <head>
+    <title>Mr Marienne is a Spy</title>
+    <style>
+      body {
+        background-color: black;
+        margin: 0;
+        padding: 0;
+      }
 
-            * {
-                box-sizing: border-box;
-            }
+      h1 {
+        font-family: "Arial Black", sans-serif;
+        font-size: 72px;
+        color: #ffea00;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 10px;
+        text-shadow: 2px 2px 0 #000, 4px 4px 0 #000, 6px 6px 0 #000, 8px 8px 0 #000, 10px 10px 0 #000, 12px 12px 0 #000;
+        -webkit-text-stroke: 4px #ffea00;
+        margin: 0;
+        padding: 50px;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7)), linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7)), url("https://www.example.com/background.jpg");
+        background-size: cover;
+        background-position: center;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(5px 5px 5px #000);
+        opacity: 0;
+        transition: opacity 1s;
+      }
 
-            body {
-                font-family: 'Muli', sans-serif;
-                background-repeat: no-repeat;
-                background-size: 100%;
-            }
+      h1.visible {
+        opacity: 1;
+      }
 
-            h1 {
-                letter-spacing: 5px;
-                font-size: 30px;
-                margin-bottom: 25px;
-                color: #2B2D2F;
-            }
+      .light {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.5);
+        animation: moveLight 10s linear infinite;
+        z-index: -1;
+        box-shadow: 0 0 100px #ffea00;
+      }
 
-            #game-view {
-                width: 825px;
-                text-align: center;
-                box-sizing: border-box;
-                justify-content: center;
-                margin: auto;
-            }
-
-            #game-board {
-                background-color: rgba(255,255,255, 0.75);
-            }
-
-            #game-nav {
-                display: flex;
-                justify-content: space-between;
-                margin: 0 0 10px 0;
-                border-bottom: 3px solid #ED2939;
-                padding-bottom: 15px;
-                align-items: baseline;    
-            }
-
-            #bottom-nav{
-                display: flex;
-                justify-content: flex-end;
-                margin: 15px 0 25px 0;
-            }
-
-            .button-game-control {
-                background-color: lightgray;
-                border: 2px solid gray;
-                border-radius: 3px;
-                color: #2B2D2F;
-                font: inherit;
-                padding: 5px 15px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 13px;
-            }
-
-            #currentTurn {
-                font-size: 18px;
-            }
-
-            .redTurn {
-                color: #ED2939;
-                border-color: #ED2939;
-            }
-
-            .blueTurn {
-                color: #2076A1;
-                border-color: #2076A1 !important;
-            }
-
-            #score {
-                font-size: 20px;
-                padding-bottom: 10px;
-            }
-
-            .card-button {
-                border: none;
-                background: none;
-                padding: 0;
-                margin: 0;
-                font: inherit;
-                cursor: pointer;
-                width: 17%;
-                height: 5%;
-                justify-content: center;
-            }
-
-            .card {
-                background: #E2DCCD;
-                border: 2px solid gray;
-                border-radius: 3px;
-                line-height: 70px;
-                color:  #2B2D2F;
-                margin: 7px;
-                align-items: center;
-                box-sizing: border-box;
-                font-size: 16px;
-            }
-
-            .redCard {
-                border-color: #ED2939;
-                background-color: #ED2939;
-                color: #F5F5F5;
-            }
-
-            .blueCard {
-                border-color: #2076A1;
-                background-color: #2076A1;
-                color: #F5F5F5;
-            }
-
-            .neutralCard {
-                background-color: gray !important;
-                color: #F5F5F5;
-            }
-            .deathCard {
-                border-color: #2B2D2F;
-                background-color: #2B2D2F;
-                color: #F5F5F5;
-            }
-
-            .selectedCard {
-                box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.75);
-            }
-        </style>
-        <script>
-            // Main functionality
-const game = {
-    currentTurn: 'red',
-    redScore: 0,
-    blueScore: 0,
-    cards: [],
-    spyMode: false,
-
-    init: function() {
-        const words = [
-            'apple', 'banana', 'cat', 'dog', 'elephant',
-            'frog', 'giraffe', 'horse', 'jacket', 'backpack',
-            'computer', 'phone', 'television', 'fridge', 'microwave',
-            'soccer', 'basketball', 'tennis', 'baseball', 'golf',
-            'piano', 'guitar', 'violin', 'drums', 'trumpet'
-        ];
-
-        const colors = Array(9).fill('red')
-            .concat(Array(9).fill('blue'))
-            .concat(Array(2).fill('death'))
-            .concat(Array(5).fill('neutral'));
-
-        this.cards = words.map((word, i) => ({
-            word: word,
-            team: colors.splice(Math.floor(Math.random() * colors.length), 1)[0],
-            selected: false
-        }));
-
-        this.shuffleArray(this.cards);
-        this.render();
-
-    },
-
-    shuffleArray: function(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-
+      @keyframes moveLight {
+        0% {
+          top: 0;
+          left: 0;
         }
-    },
-    render: function() {
-        const gameBoard = document.getElementById("game-board");
-        gameBoard.innerHTML = '';
-        for (let i = 0; i < this.cards.length; i++) {
-            const card = this.cards[i];
-            const cardElement = document.createElement("button");
-            cardElement.classList.add("card");
-            cardElement.classList.add("card-button");
-            cardElement.textContent = card.word;
-            cardElement.setAttribute("id", "card" + i);
-            cardElement.onclick = function() {
-                game.cardClicked(i);
-            };
-            if (card.selected) {
-                cardElement.classList.add(card.team + "Card");
-                cardElement.classList.add("selectedCard");
-            } else if (this.spyMode) {
-                cardElement.classList.add(card.team + "Card");
-            }
-            gameBoard.appendChild(cardElement);
+        25% {
+          top: 0;
+          left: 50%;
         }
-        this.updateTurnDisplay();
-        this.updateScoreDisplay();
-    },
+        50% {
+          top: 50%;
+          left: 50%;
+        }
+        75% {
+          top: 50%;
+          left: 0;
+        }
+        100% {
+          top: 0;
+          left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="light"></div>
+    <h1>Mr Marienne is a Spy</h1>
+    <script>
+      const light = document.querySelector(".light");
+      const title = document.querySelector("h1");
+      const titleRect = title.getBoundingClientRect();
 
-    toggleTurn: function() {
-        this.currentTurn = this.currentTurn === 'red' ? 'blue' : 'red';
-        this.updateTurnDisplay();
-    },
-
-    updateTurnDisplay: function() {
-        const currentTurnElement = document.getElementById("currentTurn");
-        currentTurnElement.textContent = this.currentTurn.toUpperCase() + "'S TURN";
-        currentTurnElement.classList.toggle("redTurn");
-        currentTurnElement.classList.toggle("blueTurn");
-    },
-
-    updateScoreDisplay: function() {
-        document.getElementById("redScore").textContent = "RED: " + this.redScore;
-        document.getElementById("blueScore").textContent = "BLUE: " + this.blueScore;
-    },
-
-    cardClicked: function(index) {
-        const card = this.cards[index];
-        if (card.selected) return;
-        card.selected = true;
-        const cardElement = document.getElementById("card" + index);
-        cardElement.classList.add(card.team + "Card");
-        cardElement.classList.add("selectedCard");
-        if (card.team === this.currentTurn) {
-            this[this.currentTurn + "Score"]++;
-            this.updateScoreDisplay();
+      function checkLight() {
+        const lightRect = light.getBoundingClientRect();
+        if (
+          lightRect.top <= titleRect.bottom &&
+          lightRect.bottom >= titleRect.top &&
+          lightRect.left <= titleRect.right &&
+          lightRect.right >= titleRect.left
+        ) {
+          title.classList.add("visible");
         } else {
-            this.toggleTurn();
+          title.classList.remove("visible");
         }
-    },
+      }
 
-    toggleSpyMode: function() {
-        this.spyMode = !this.spyMode;
-        this.render();
-    }
-};
-
-game.init();
-
-document.addEventListener("DOMContentLoaded", function() {
-    game.render();
-});
-
-function resetGame() {
-    game.init();
-}
-
-function endTurn() {
-    game.toggleTurn();
-}
-
-            function spyMode() {
-                game.toggleSpyMode();
-            }
-        </script>
-    </head>
-    <body>
-        <div id="game-view">
-            <h1>Mr Marienne is a spy</h1>
-            <div id="game-nav">
-                <div id="score">
-                    <span id="redScore">RED: 0</span> | <span id="blueScore">BLUE: 0</span>
-                </div>
-                <div id="bottom-nav">
-                    <button class="button-game-control" onclick="resetGame()">Reset Game</button>
-                    <button class="button-game-control" onclick="endTurn()">End Turn</button>
-                    <button class="button-game-control" onclick="spyMode()">Spy Mode</button>
-                </div>
-            </div>
-            <div id="game-board"></div>
-            <div id="currentTurn" class="redTurn">RED'S TURN</div>
-        </div>
-    </body>
+      setInterval(checkLight, 100);
+    </script>
+  </body>
 </html>

@@ -1,160 +1,644 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
-<head>
-	<title>3D Pink Die</title>
-	<style>
-		body {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			min-height: 100vh;
-			background: #f7d9ea;
-		}
-		.die {
-			position: relative;
-			width: 200px;
-			height: 200px;
-			transform-style: preserve-3d;
-			transform: rotateX(-30deg) rotateY(45deg) rotateZ(-30deg);
-			transition: transform 1s;
-			cursor: pointer;
-		}
-		.side {
-			width: 100%;
-			height: 100%;
-			background: #e66e9c;
-			border: 2px solid black;
-			position: absolute;
-			opacity: 0.8;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-		.side:before {
-			content: "";
-			width: 20%;
-			height: 20%;
-			background: black;
-			border-radius: 50%;
-		}
-		.base {
-			width: 100%;
-			height: 100%;
-			transform: translateY(73px) rotateX(90deg);
-			border: 0;
-			background: #f7d9ea;
-		}
-		.one {
-			transform: translateZ(100px);
-		}
-		.two {
-			transform: translateX(-100px) rotateY(-90deg);
-		}
-		.two:before {
-			background: transparent;
-			box-shadow: 
-				#000 -50px -50px 0px 0px, 
-					#000 50px 50px 0px 0px;
-		}
-		.three {
-			transform: translateY(100px) rotateX(90deg);
-		}
-		.three:before {
-			box-shadow: 
-				#000 -50px 50px 0px 0px, 
-					#000 50px -50px 0px 0px;
-		}
-		.four {
-			transform: translateY(-100px) rotateX(90deg);
-		}
-		.four:before {
-			background: transparent;
-			box-shadow: 
-				#000 -50px 50px 0px 0px, 
-					#000 -50px -50px 0px 0px,
-					#000 50px 50px 0px 0px, 
-					#000 50px -50px 0px 0px;
-		}
-		.five {
-			transform: translateX(100px) rotateY(90deg);
-		}
-		.five:before {
-			box-shadow: 
-				#000 -50px -50px 0px 0px, 
-					#000 -50px 50px 0px 0px,
-					#000 50px -50px 0px 0px, 
-					#000 50px 50px 0px 0px;
-		}
-		.six {
-			transform: translateZ(-100px);
-		}
-}
-		.six:before {
-			background: transparent;
-			box-shadow: 
-				#000 -50px -50px 0px 0px, 
-					#000 -50px 0px 0px 0px,
-					#000 -50px 50px 0px 0px, 
-					#000 50px -50px 0px 0px, 
-					#000 50px 0px 0px 0px,
-					#000 50px 50px 0px 0px;
-		}
-body {
-	background-color: transparent;
-}
-	</style>
-</head>
-<body>
-	<div class="die" onclick="rollDie()">
-		<div class="side base"></div>
-		<div class="side one">
-			<span class="dot"></span>
-		</div>
-		<div class="side two">
-			<span class="dot"></span>
-			<span class="dot"></span>
-		</div>
-		<div class="side three">
-			<span class="dot"></span>
-			<span class="dot"></span>
-			<span class="dot"></span>
-		</div>
-		<div class="side four">
-			<span class="dot"></span>
-			<span class="dot"></span>
-			<span class="dot"></span>
-			<span class="dot"></span>
-		</div>
-		<div class="side five">
-			<span class="dot"></span>
-			<span class="dot"></span>
-			<span class="dot"></span>
-			<span class="dot"></span>
-			<span class="dot"></span>
-		</div>
-		<div class="side six">
-			<span class="dot"></span>
-			<span class="dot"></span>
-			<span class="dot"></span>
-			<span class="dot"></span>
-			<span class="dot"></span>
-			<span class="dot"></span>
-		</div>
-	</div>
-	<script>
-		function rollDie() {
-			var die = document.querySelector('.die');
-			var max = 6;
-			var min = 1;
-			var xRand = getRandom(max, min);
-			var yRand = getRandom(max, min);
-			var zRand = getRandom(max, min);
-			die.style.transform = 'rotateX(' + xRand + 'deg) rotateY(' + yRand + 'deg) rotateZ(' + zRand + 'deg)';
-		}
+    <head>
+        <title>Mr Marienne is a spy</title>
+        <meta charset="UTF-8">
+        <style>
+            /* Styles */
+            @import url('https://fonts.googleapis.com/css2?family=Muli:wght@400;700&display=swap');
 
-		function getRandom(max, min) {
-			return (Math.floor(Math.random() * (max - min)) + min) * 90;
-		}
-	</script>
-</body>
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Muli', sans-serif;
+                background-repeat: no-repeat;
+                background-size: 100%;
+            }
+
+            h1 {
+                letter-spacing: 5px;
+                font-size: 30px;
+                margin-bottom: 25px;
+                color: #2B2D2F;
+            }
+
+            #game-view {
+                width: 825px;
+                text-align: center;
+                box-sizing: border-box;
+                justify-content: center;
+                margin: auto;
+            }
+
+            #game-board {
+                background-color: rgba(255,255,255, 0.75);
+            }
+
+            #game-nav {
+                display: flex;
+                justify-content: space-between;
+                margin: 0 0 10px 0;
+                border-bottom: 3px solid #ED2939;
+                padding-bottom: 15px;
+                align-items: baseline;    
+            }
+
+            #bottom-nav{
+                display: flex;
+                justify-content: flex-end;
+                margin: 15px 0 25px 0;
+            }
+
+            .button-game-control {
+                background-color: lightgray;
+                border: 2px solid gray;
+                border-radius: 3px;
+                color: #2B2D2F;
+                font: inherit;
+                padding: 5px 15px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 13px;
+            }
+
+            #currentTurn {
+                font-size: 18px;
+            }
+
+            .redTurn {
+                color: #ED2939;
+                border-color: #ED2939;
+            }
+
+            .blueTurn {
+                color: #2076A1;
+                border-color: #2076A1 !important;
+            }
+
+            #score {
+                font-size: 20px;
+				color: #4bd620;
+                padding-bottom: 10px;
+            }
+
+            .card-button {
+                border: none;
+                background: none;
+                padding: 0;
+                margin: 0;
+                font: inherit;
+                cursor: pointer;
+                width: 17%;
+                height: 5%;
+                justify-content: center;
+            }
+
+            .card {
+                background: #E2DCCD;
+                border: 2px solid gray;
+                border-radius: 3px;
+                line-height: 70px;
+                color:  #2B2D2F;
+                margin: 7px;
+                align-items: center;
+                box-sizing: border-box;
+                font-size: 16px;
+            }
+
+            .redCard {
+                border-color: #ED2939;
+                background-color: #ED2939;
+                color: #F5F5F5;
+            }
+
+            .blueCard {
+                border-color: #2076A1;
+                background-color: #2076A1;
+                color: #F5F5F5;
+            }
+
+            .neutralCard {
+                background-color: gray !important;
+                color: #F5F5F5;
+            }
+            .deathCard {
+                border-color: #2B2D2F;
+                background-color: #2B2D2F;
+                color: #F5F5F5;
+            }
+
+            .selectedCard {
+                box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.75);
+            }
+        </style>
+        <script>
+            // Main functionality
+const game = {
+    currentTurn: 'red',
+    redScore: 0,
+    blueScore: 0,
+    cards: [],
+    spyMode: false,
+
+    init: function() {
+ const words = [  "Ability",
+"Apple",
+"Ball",
+"Book",
+"Cat",
+"Chair",
+"Clock",
+"Cloud",
+"Computer",
+"Cookie",
+"Cup",
+"Dog",
+"Door",
+"Egg",
+"Fish",
+"Flag",
+"Flower",
+"Foot",
+"Fruit",
+"Glass",
+"Grass",
+"Hand",
+"Hat",
+"House",
+"Ice",
+"Insect",
+"Key",
+"Lamp",
+"Leaf",
+"Light",
+"Milk",
+"Moon",
+"Mountain",
+"Music",
+"Nose",
+"Ocean",
+"Orange",
+"Pencil",
+"Phone",
+"Pizza",
+"Rain",
+"Ring",
+"Rose",
+"Shoe",
+"Sky",
+"Star",
+"Sun",
+"Table",
+"Tree",
+"Water",
+"Window",
+"Airplane",
+"Apple pie",
+"Baby",
+"Bag",
+"Banana",
+"Bed",
+"Bicycle",
+"Bird",
+"Black",
+"Blue",
+"Boat",
+"Bread",
+"Bridge",
+"Broccoli",
+"Bus",
+"Butterfly",
+"Camera",
+"Car",
+"Carrot",
+"Chair",
+"Cheese",
+"Chicken",
+"Chocolate",
+"Cinema",
+"Clock",
+"Coffee",
+"Computer",
+"Cookie",
+"Cow",
+"Crayon",
+"Cupcake",
+"Dance",
+"Diamond",
+"Doctor",
+"Dog",
+"Dolphin",
+"Donut",
+"Dragon",
+"Duck",
+"Eagle",
+"Elevator",
+"Elephant",
+"Envelope",
+"Eye",
+"Fan",
+"Fence",
+"Fire",
+"Fish",
+"Flamingo",
+"Flower",
+"Forest",
+"Fox",
+"Frog",
+"Fruit salad",
+"Garden",
+"Gift",
+"Giraffe",
+"Glasses",
+"Glove",
+"Gold",
+"Grasshopper",
+"Green",
+"Guitar",
+"Hammer",
+"Hat",
+"Heart",
+"Helicopter",
+"Hippo",
+"Home",
+"Horse",
+"Hospital",
+"Hot air balloon",
+"Hot dog",
+"Ice cream",
+"Island",
+"Jacket",
+"Jellyfish",
+"Jet ski",
+"Juice",
+"Kangaroo",
+"Key",
+"Kite",
+"Knife",
+"Ladybug",
+"Lake",
+"Lamp",
+"Laptop",
+"Leaf",
+"Lemon",
+"Lion",
+"Lizard",
+"Lollipop",
+"Lunch",
+"Magnet",
+"Mailbox",
+"Map",
+"Marker",
+"Melon",
+"Microphone",
+"Monkey",
+"Moon",
+"Motorcycle",
+"Mountain",
+"Mouse",
+"Mushroom",
+"Necklace",
+"Nest",
+"Newspaper",
+"Night",
+"Noodle",
+"Nose",
+"Ocean",
+"Octopus",
+"Orange",
+"Owl",
+"Paintbrush",
+"Pancake",
+"Panda",
+"Paper",
+"Parrot",
+"Peach",
+"Penguin",
+"Piano",
+"Pie",
+"Pig",
+"Pigeon",
+"Pillow",
+"Pizza",
+"Plane",
+"Plant",
+"Plate",
+"Pumpkin",
+"Purse",
+"Queen",
+"Rabbit",
+"Rainbow",
+"Rat",
+"Robot",
+"Rock",
+"Rose",
+"Sailboat",
+"Sand",
+"Sandwich",
+"Scissors",
+"Seahorse",
+"Seal",
+"Shark",
+"Shirt",
+"Shoe",
+"Singing",
+"Sister",
+"Skateboard",
+"Ski",
+"Snake",
+"Snow",
+"Soccer",
+"Socks",
+"Soda",
+"Song",
+"Soup",
+"Space",
+"Spider",
+"Spoon",
+"Spring",
+"Star",
+"Strawberry",
+"Summer",
+"Sun",
+"Sunglasses",
+"Surfing",
+"Swan",
+"Sweater",
+"Swimming",
+"Table",
+"Tail",
+"Teacher",
+"Telephone",
+"Television",
+"Tennis",
+"Thermometer",
+"Tiger",
+"Toast",
+"Toe",
+"Tomato",
+"Toolbox",
+"Toothbrush",
+"Toothpaste",
+"Tornado",
+"Train",
+"Tree",
+"Truck",
+"Turtle",
+"Umbrella",
+"Unicorn",
+"Vacuum",
+"Vegetable",
+"Violin",
+"Watermelon",
+"Whale",
+"Winter",
+"Wolf",
+"Wood",
+"Worm",
+"X-ray",
+"Yacht",
+"Yellow",
+"Yo-yo",
+"Zebra",
+"Zipper",
+"Zoo",
+"Airport",
+"Alphabet",
+"Baby bottle",
+"Backpack",
+"Balloon",
+"Baseball",
+"Basketball",
+"Beach",
+"Bee",
+"Birthday",
+"Biscuit",
+"Boots",
+"Bow",
+"Bowtie",
+"Box",
+"Bubbles",
+"Butterfly",
+"Cactus",
+"Camera",
+"Campfire",
+"Candle",
+"Candy",
+"Carrot cake",
+"Castle",
+"Caterpillar",
+"Cherry",
+"Chick",
+"Chimney",
+"Christmas",
+"Cloud",
+"Clown",
+"Coffee cup",
+"Coin",
+"Comet",
+"Cook",
+"Corn",
+"Cowboy",
+"Crab",
+"Cruise",
+"Curtains",
+"Desk",
+"Diamond",
+"Dinosaur",
+"Doctor",
+"Dolphin",
+"Donut",
+"Door",
+"Dress",
+"Drum",
+"Duck",
+"Eagle",
+"Earrings",
+"Easter",
+"Elephant",
+"Envelope",
+"Eraser",
+"Eyeglasses",
+"Fairy",
+"Feather",
+"Fire",
+"Fish",
+"Flower",
+"Fly",
+"Football",
+"Fountain",
+"Frog",
+"Fruit",
+"Garbage truck",
+"Gingerbread",
+"Glasses",
+"Glove",
+"Gorilla",
+"Grass",
+"Guitar",
+"Hamburger",
+"Hand",
+"Harp",
+"Hat",
+"Helicopter",
+"Horse",
+"Hotdog",
+"Ice cream",
+"Igloo"];
+
+  const colors = Array(9).fill('red')
+      .concat(Array(9).fill('blue'))
+      .concat(Array(2).fill('death'))
+      .concat(Array(5).fill('neutral'));
+
+  this.cards = [];
+  for (let i = 0; i < 25; i++) {
+    const randomIndex = Math.floor(Math.random() * words.length);
+    const word = words.splice(randomIndex, 1)[0];
+    this.cards.push(word);
+  }
+
+  this.cards = this.cards.map((word, i) => ({
+      word: word,
+      team: colors.splice(Math.floor(Math.random() * colors.length), 1)[0],
+      selected: false
+  }));
+
+  this.shuffleArray(this.cards);
+  this.render();
+},
+
+shuffleArray: function (array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+},
+    render: function() {
+        const gameBoard = document.getElementById("game-board");
+        gameBoard.innerHTML = '';
+        for (let i = 0; i < this.cards.length; i++) {
+            const card = this.cards[i];
+            const cardElement = document.createElement("button");
+            cardElement.classList.add("card");
+            cardElement.classList.add("card-button");
+            cardElement.textContent = card.word;
+            cardElement.setAttribute("id", "card" + i);
+            cardElement.onclick = function() {
+                game.cardClicked(i);
+            };
+            if (card.selected) {
+                cardElement.classList.add(card.team + "Card");
+                cardElement.classList.add("selectedCard");
+            } else if (this.spyMode) {
+                cardElement.classList.add(card.team + "Card");
+            }
+            gameBoard.appendChild(cardElement);
+        }
+        this.updateTurnDisplay();
+        this.updateScoreDisplay();
+    },
+
+    toggleTurn: function() {
+        this.currentTurn = this.currentTurn === 'red' ? 'blue' : 'red';
+        this.updateTurnDisplay();
+    },
+
+    updateTurnDisplay: function() {
+        const currentTurnElement = document.getElementById("currentTurn");
+        currentTurnElement.textContent = this.currentTurn.toUpperCase() + "'S TURN";
+        currentTurnElement.classList.toggle("redTurn");
+        currentTurnElement.classList.toggle("blueTurn");
+    },
+
+    updateScoreDisplay: function() {
+        document.getElementById("redScore").textContent = "RED: " + this.redScore;
+        document.getElementById("blueScore").textContent = "BLUE: " + this.blueScore;
+    },
+
+ cardClicked: function(index) {
+    const card = this.cards[index];
+    if (card.selected) return;
+    card.selected = true;
+    const cardElement = document.getElementById("card" + index);
+    cardElement.classList.add(card.team + "Card");
+    cardElement.classList.add("selectedCard");
+
+    if (this.currentTurn === "red") {
+        if (card.team === "red") {
+            this.redScore += 3;
+        } else if (card.team === "neutral") {
+            this.redScore += 1;
+        } else if (card.team === "blue") {
+            this.redScore -= 1;
+        } else if (card.team === "death") {
+            alert("L'équipe rouge a perdu!");
+            this.init();
+            return;
+        }
+    } else if (this.currentTurn === "blue") {
+        if (card.team === "blue") {
+            this.blueScore += 3;
+        } else if (card.team === "neutral") {
+            this.blueScore += 1;
+        } else if (card.team === "red") {
+            this.blueScore -= 1;
+        } else if (card.team === "death") {
+            alert("L'équipe bleue a perdu!");
+            this.init();
+            return;
+        }
+    }
+
+ 
+    this.updateScoreDisplay();
+    },
+
+    toggleSpyMode: function() {
+        this.spyMode = !this.spyMode;
+        this.render();
+    }
+};
+
+game.init();
+
+document.addEventListener("DOMContentLoaded", function() {
+    game.render();
+});
+
+function resetGame() {
+    game.init();
+   let blueScore=0;
+
+}
+
+function endTurn() {
+    game.toggleTurn();
+}
+
+            function spyMode() {
+                game.toggleSpyMode();
+            }
+        </script>
+    </head>
+    <body>
+        <div id="game-view">
+ <h1 style="color: #ffea00;">Mr Marienne is a spy!</h1>
+            <div id="game-nav">
+                <div id="score">
+                    <span id="redScore">RED: 0</span> | <span id="blueScore">BLUE: 0</span>
+                </div>
+                <div id="bottom-nav">
+                    <button class="button-game-control" onclick="resetGame()">Reset Game</button>
+                    <button class="button-game-control" onclick="endTurn()">End Turn</button>
+                    <button class="button-game-control" onclick="spyMode()">Spy Mode</button>
+                </div>
+            </div>
+            <div id="game-board"></div>
+            <div id="currentTurn" class="redTurn">RED'S TURN</div>
+        </div>
+    </body>
 </html>
